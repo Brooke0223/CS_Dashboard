@@ -2,10 +2,10 @@ import pandas as pd
 from pathlib import Path
 
 # Read the Excel file
-excel_file = pd.ExcelFile(Path('Raw_Data/CS_Data/2013/Drug Utilization Report Data - 2013.xlsx'))
+excel_file = pd.ExcelFile(Path('Raw_Data/CS_Data/2018/2018_Michigan_Drug_Utilization_Report_FINAL.xlsx'))
 
 # Define the worksheet names
-worksheets = ['PRESCRIBER COUNTY', 'PATIENT COUNTY']
+worksheets = ['Prescriber County', 'Patient County']
 
 # Initialize a list to store DataFrames
 dataframes = []
@@ -23,14 +23,19 @@ for sheet_name in worksheets:
 combined_data = pd.concat(dataframes, ignore_index=True)
 
 # Add a new column for Year
-combined_data['Year'] = 2013
+combined_data['Year'] = 2018
 
 # Define column name mapping
 column_mapping = {
-    'PRESCRIPTION COUNT (#)': 'Total_Prescriptions',
-    'PRESCRIPTION QUANTITY (#)': 'Total_Units',
-    'DEA DRUG SCHEDULE': 'DEA_Drug_Schedule',
+    'PRESCRIPTION COUNT': 'Total_Prescriptions',
+    'PRESCRIPTION QUANTITY (DOSAGE UNITS)': 'Total_Units',
+    'DRUG SCHEDULE': 'DEA_Drug_Schedule',
     'DRUG NAME/STRENGTH': 'Drug_Name_Strength',
+    'AGE RANGE': 'Patient_Age_Bracket',
+    'PATIENT COUNT': 'Total_Patients',
+    'DAYS SUPPLY': 'Total_Days_Supply',
+    'AVERAGE DAILY MMEs (*ONLY CALCULATED FOR OPIATE AGONISTS AND OPIATE PARTIAL AGONISTS)': 'Average_Daily_MME',
+    'PRESCRIPTION COUNT GREATER THAN OR EQUAL TO 90 MMEs (*ONLY CALCULATED FOR OPIATE AGONISTS AND OPIATE PARTIAL AGONISTS)': 'Total_Above_90MME'
 }
 
 # Rename columns
@@ -44,7 +49,7 @@ for index, row in combined_data.iterrows():
     try:
         pd.to_numeric(row['Total_Prescriptions'])
         pd.to_numeric(row['Total_Units'])
-        pd.to_numeric(row['DEA_Drug_Schedule'])
+        pd.to_numeric(row['DEA_Drug_Schedule'][-1])
     except ValueError as e:
         validation_errors.append(f"Validation error at row {index + 2}: {e}")
 
@@ -57,12 +62,15 @@ def convert_to_int(value):
         return None
 
 
-integer_columns = ['DEA_Drug_Schedule', 'Total_Prescriptions', 'Total_Units']
+integer_columns = ['Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply']
 for col in integer_columns:
     combined_data[col] = combined_data[col].apply(convert_to_int)
 
+# Convert DEA_Drug_Schedule values to integer by taking the last character
+combined_data['DEA_Drug_Schedule'] = combined_data['DEA_Drug_Schedule'].apply(lambda x: int(str(x)[-1]))
+
 # Define the output SQL file path
-output_sql_file = 'SQL_Files/2013_CS.SQL'
+output_sql_file = 'SQL_Files/2018_CS.SQL'
 
 # Generate DDL SQL statements
 ddl_statements = [
@@ -90,21 +98,21 @@ ddl_statements = [
 insert_statements = []
 for index, row in combined_data.iterrows():
     insert_values = [
-        '2013',
+        '2018',
         f"'{row.get('PRESCRIBER COUNTY')}'" if pd.notna(row.get('PRESCRIBER COUNTY')) else 'NULL',  # Handle case where column doesn't exist
         f"'{row.get('PRESCRIBER STATE')}'" if pd.notna(row.get('PRESCRIBER STATE')) else 'NULL',  # Handle case where column doesn't exist
         f"'{row.get('PATIENT COUNTY')}'" if pd.notna(row.get('PATIENT COUNTY')) else 'NULL',  # Handle case where column doesn't exist
         f"'{row.get('PATIENT STATE')}'" if pd.notna(row.get('PATIENT STATE')) else 'NULL',  # Handle case where column doesn't exist
-        'NULL',  # Account for Patient_Age_Bracket not present in this dataset
+        f"'{row.get('Patient_Age_Bracket')}'",
         f"'{row.get('Drug_Name_Strength')}'",
         f"{row.get('DEA_Drug_Schedule')}",
         f"'{row.get('AHFS DESCRIPTION')}'",
         f"{row.get('Total_Prescriptions')}",
         f"{row.get('Total_Units')}",
-        'NULL',  # Account for Total_Patients not present in this dataset
-        'NULL',  # Account for Total_Days_Supply not present in this dataset
-        'NULL',  # Account for Average_Daily_MME not present in this dataset
-        'NULL'   # Account for Total_Above_90MME not present in this dataset
+        f"{row.get('Total_Patients')}",
+        f"{row.get('Total_Days_Supply')}",
+        f"{row.get('Average_Daily_MME')}" if pd.notna(row.get('Average_Daily_MME')) else 'NULL',  # Handle case where column is N/A
+        f"{int(row.get('Total_Above_90MME'))}" if pd.notna(row.get('Total_Above_90MME')) else 'NULL'  # Handle case where column is N/A
     ]
 
     insert_statement = "INSERT INTO Prescription_Data (Year, Prescriber_County, Prescriber_State, Patient_County, Patient_State, Patient_Age_Bracket, "
