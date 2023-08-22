@@ -35,12 +35,13 @@ Data Discovery
 
 Data Structuring
 - Aligned age-bracket categories within the Population datasets to correspond with those in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
-- Consolidated data for patients/providers with the same county but different zip codes (reporting years 2021-2022) to ensure consistency with earlier datasets and maintain county as the primary unit of consideration.
+    - e.g. age-brackets "<1" and "1-4" were merged to form the consolidated "0-5" bracket
+- Given that zip codes won't factor into any subsequent analyses, data for patients/providers within the same county but different zip codes for reporting years 2021-2022 were aggregated to maintain consistency with earlier datasets and ensure county as the primary unit of consideration.
 
 Data Cleaning
-- Converted pertinent data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
 - Maintained categorical data consistency across diverse reporting years (e.g. “3” vs. “Schedule 3”).
 - Managed special values to ensure integrity of SQL commands (eg conversion of “N/A” to “NULL” for SQL insertion).
+- Converted pertinent data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
 - Trimmed and formatted string data to ensure uniformity and prevent whitespace mismatches.
 
 Data Enriching
