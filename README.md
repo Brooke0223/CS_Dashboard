@@ -30,41 +30,41 @@ The project utilizes publicly-accessible datasets.
 
 
 ## Data Handling
-### Data Discovery
+Data Discovery
 - A preliminary exploratory analysis of CSV data was performed using Pandas to understand distributions, ranges, and potential issues.
 
-### Data Structuring
+Data Structuring
 - Age-bracket categories within the Population datasets were aligned to correspond with age-brackets in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
 - Data pertaining to patients/providers sharing counties but having distinct zip codes (reporting years 2021-2022) were consolidated to maintain consistency with earlier datasets.
 
-### Data Cleaning
+Data Cleaning
 - Conversion of pertinent data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
 - Management of special values, converting “N/A” to “NULL” for SQL insertion commands.
 - Maintenance of categorical data consistency across diverse reporting years (e.g. “3” vs. “Schedule 3”).
 - Trimming and formatting of string data to ensure uniformity and avoid mismatch due to whitespace.
 
-### Data Enriching
+Data Enriching
 - Integrated of Population dataset to enrich a broader demographic context into the prescribing trends.
 
-### Data Validation
+Data Validation
 - Validated integer data fields (e.g. 'Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply').
 - Scrutinized for missing values to ensure data completeness.
 - Verified data integrity through accuracy assessment of mathematical computations.
 - Verified MME calculations were only present only for opiate drugs.
 
-### Data Integrity Checks
+Data Integrity Checks
 - Examined data consistency against logical constraints and patterns.
 
-### Outlier Detection and Handling
+Outlier Detection and Handling
 - Detected and managed outliers for robust analysis.
 
-### Data Publishing
+Data Publishing
 - Transformed divergent CSV data into structured DDL using Python and Pandas, forming a foundation for analysis.
 
-### Documentation
+Documentation
 - Created comprehensive documentation outlining transformations, assumptions, and methods for transparency.
 
-### Quality Control
+Quality Control
 - Implemented quality control processes to validate adherence to best practices.
 
 
