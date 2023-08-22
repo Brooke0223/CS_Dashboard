@@ -3,14 +3,15 @@
 
 ## Description
 
-The "Michigan Controlled Substance Dashboard" is a dynamic Power BI visualization that utilizes data science techniques to analyze and extract meaningful insights into Controlled Substance Prescribing Practices. This initiative leverages extensive and publicly accessible datasets to craft an immersive visualization tool, fostering an enhanced comprehension of controlled substance prescription trends within the state of Michigan.
+The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan.
 
 ## Project Objectives
 
 The primary objectives of this project are as follows:
 
-- **Educational Integration**: Offer a valuable learning opportunity for Computer Science students by integrating the project's analytical database into Oregon State University's CS-340 course, providing practical experience in data science techniques and database concepts.
-- **User-Focused Tool**: Develop a dashboard that holds promising potential for use by healthcare providers, legislators, public health organizations, and anyone interested in understanding controlled substance prescribing trends.
+- **User-Centric Tool**: The dashboard of this project holds the promise of being utilized by healthcare providers, legislators, public health organizations, and those interested in comprehending trends in controlled substance prescribing.
+
+- **Educational Integration**: The analytical database that underpins the project will be integrated into Oregon State University's CS-340 course, delivering practical experience in data science techniques and database concepts to students enrolled in OSU's Bachelor of Computer Science program.
 
 ## Features
 
@@ -19,7 +20,6 @@ The primary objectives of this project are as follows:
 - Geospatial visualizations showcasing prescription hotspots across different regions in Michigan.
 - Trends analysis to identify potential shifts in prescribing practices and their implications.
 - User-friendly interface that allows users to customize and filter data according to their specific interests.
-- Integration potential with educational curricula for a hands-on learning experience.
 
 
 ## Datasets
@@ -31,27 +31,26 @@ The project utilizes publicly-accessible datasets.
 
 ## Data Handling
 ### Data Discovery
-- Conducted preliminary exploratory analysis of CSV data using Pandas to understand distributions, ranges, and potential issues.
+- A preliminary exploratory analysis of CSV data was performed using Pandas to understand distributions, ranges, and potential issues.
 
 ### Data Structuring
-- Mapped age-bracket categories in the Population datasets to match Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
-- Consolidated patients/providers by counties in datasets for years 2021-2022, disregarding zip codes to focus on counties; any data pertaining to patients/providers in different zip codes but the same county were aggregated to maintain consistency with previous years’ datasets.
+- Age-bracket categories within the Population datasets were aligned to correspond with age-brackets in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
+- Data pertaining to patients/providers sharing counties but having distinct zip codes (reporting years 2021-2022) were consolidated to maintain consistency with earlier datasets.
 
 ### Data Cleaning
-- Converted relevant data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
-- Handles special values by converting “N/A” to “NULL” for SQL insertion commands.
-- Ensured consistency in categorical data across different reporting years (e.g. “3” vs. “Schedule 3”).
-- Trimmed and formatted string data to ensure uniformity and avoid mismatch due to whitespace.
+- Conversion of pertinent data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
+- Management of special values, converting “N/A” to “NULL” for SQL insertion commands.
+- Maintenance of categorical data consistency across diverse reporting years (e.g. “3” vs. “Schedule 3”).
+- Trimming and formatting of string data to ensure uniformity and avoid mismatch due to whitespace.
 
 ### Data Enriching
-- Integrated Population dataset, enriching prescribing trends with broader demographic context.
+- Integrated of Population dataset to enrich a broader demographic context into the prescribing trends.
 
 ### Data Validation
 - Validated integer data fields (e.g. 'Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply').
-- Checked for missing values to ensure data completeness.
-- Verified data integrity through mathematical computation accuracy assessment.
-- Verified MME calculations present only for opiate drugs.
-- Verified null and non-integer values in population data.
+- Scrutinized for missing values to ensure data completeness.
+- Verified data integrity through accuracy assessment of mathematical computations.
+- Verified MME calculations were only present only for opiate drugs.
 
 ### Data Integrity Checks
 - Examined data consistency against logical constraints and patterns.
