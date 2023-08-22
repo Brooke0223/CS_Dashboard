@@ -9,9 +9,9 @@ The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Po
 
 The primary objectives of this project are as follows:
 
-- **User-Focused Tool**: The dashboard of this project holds the promise of being utilized by healthcare providers, legislators, public health organizations, and those interested in comprehending trends in controlled substance prescribing.
+- **User-Focused Tool**: The dashboard of this project is designed to serve healthcare providers, legislators, public health organizations, and individuals interested in Opioid Stewardship, by providing insights into the nuances of controlled substance prescribing trends.
 
-- **Educational Integration**: The analytical database that underpins the project will be integrated into Oregon State University's CS-340 course, delivering practical experience in data science techniques and database concepts to students enrolled in OSU's Bachelor of Computer Science program.
+- **Educational Integration**: The analytical database that underpins the project will be integrated into Oregon State University's CS-340 course, offering hands-on experience in data science techniques and database concepts to students in OSU's Bachelor of Computer Science program.
 
 ## Features
 
@@ -39,8 +39,8 @@ Data Structuring
 
 Data Cleaning
 - Converted pertinent data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') to integer datatype.
-- Managed special values by converting “N/A” to “NULL” for SQL insertion commands.
 - Maintained categorical data consistency across diverse reporting years (e.g. “3” vs. “Schedule 3”).
+- Managed special values to ensure integrity of SQL commands (eg conversion of “N/A” to “NULL” for SQL insertion).
 - Trimmed and formatted string data to ensure uniformity and prevent whitespace mismatches.
 
 Data Enriching
@@ -49,8 +49,8 @@ Data Enriching
 Data Validation
 - Validated integer data fields (e.g. 'Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply').
 - Scrutinized for missing values to ensure data completeness.
-- Verified data integrity through accuracy assessment of mathematical computations.
-- Verified MME calculations were present only for opiate drugs.
+- Verified data integrity by validating mathematical computations, specifically for the "Average_Daily_MME" metric.
+- Verified lack of MME values for non-opiate drugs.
 
 Data Integrity Checks
 - Examined data consistency against logical constraints and patterns.
