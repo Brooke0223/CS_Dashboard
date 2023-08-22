@@ -1,5 +1,3 @@
-# THIS FILE SHOULD ALSO BE CHECKING FOR BAD DATA (E.G. Null values or non-integer values for specific columns)
-
 import os
 import pandas as pd
 from pathlib import Path
@@ -18,30 +16,30 @@ def process_file(file_path, age_bracket_mapping):
     """
     df = pd.read_csv(file_path)
 
-    # Filter out rows with County = "Michigan"
+    # Filter out summary row (County = "Michigan")
     df = df[df["County"] != "Michigan"]
 
     # Select and rename columns
     if "Kids.csv" in file_path:
         age_col_indices = [0, 4, 6]
-    elif "Younger_Adults.csv" in file_path:  # Younger_Adults.csv
-        age_col_indices = [0, 4, 6, 8, 10, 12, 14]
-    else:  # Older_Adults.csv
-        age_col_indices = [0, 4, 6, 8, 10, 12]
-
-    if "Kids.csv" in file_path:
         age_brackets = ["<1", "1-4"]
     elif "Younger_Adults.csv" in file_path:
+        age_col_indices = [0, 4, 6, 8, 10, 12, 14]
         age_brackets = ["18-19", "20-24", "25-29", "30-34", "35-39", "40-44"]
     else:  # Older_Adults.csv
+        age_col_indices = [0, 4, 6, 8, 10, 12]
         age_brackets = ["45-49", "50-54", "55-59", "60-64", "65+"]
 
     df = df.iloc[:, age_col_indices]
     df.columns = ["County"] + age_brackets
 
-    # Convert Population_Total column to integers
+    # Convert Population_Total column to integers and handle missing values
     for col in df.columns[1:]:
-        df[col] = df[col].str.replace(",", "").astype(int)
+        df[col] = df[col].str.replace(",", "")
+        try:
+            df[col] = df[col].astype(int)
+        except ValueError:
+            raise ValueError(f"Invalid value found in {col} column. Please check for null or non-integer values.")
 
     # Add the "Year" column
     year = os.path.basename(os.path.dirname(file_path))
