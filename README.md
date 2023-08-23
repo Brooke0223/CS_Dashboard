@@ -61,7 +61,14 @@ Data Publishing
 ## Database Schema
 ![Database Schema](Database_Schema.jpg)
 The schema of the analytical database was carefully designed to account for any inherited limitations due to the de-identified nature of the prescription data.
-Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Patient_Category`) were created containing the following facts: `total_prescriptions`, `total_patients`, `total_units`, `total_days_supply`, `average_daily_MME`,  `total_above_90MME`, dimensionalized by `Drugs`, `Locations`, `Populations`, `Age-Brackets`, and `Years`.
+Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Patient_Category`) were created containing the following facts: 
+- `total_prescriptions`
+- `total_patients`
+- `total_units`
+- `total_days_supply`
+- `average_daily_MME`
+- `total_above_90MME`
+Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `Age-Brackets`, and `Years`.
 
 
 
