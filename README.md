@@ -59,7 +59,7 @@ Data Publishing
 
 
 ## Database Schema
-![Database Schema](Database_Schema.jpg)
+![Database Schema](Database_Schema.png)
 The schema of the analytical database was carefully designed to account for any inherited limitations due to the de-identified nature of the prescription data.
 Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Patient_Category`) were created containing the following facts: 
 - `total_prescriptions`
