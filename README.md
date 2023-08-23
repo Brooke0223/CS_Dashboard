@@ -3,7 +3,7 @@
 
 ## Description
 
-The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan.
+The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan. In total, this project meticulously examines 10 years and more than 2 million data rows, delivering a comprehensive analysis.
 
 ## Project Objectives
 
@@ -35,14 +35,14 @@ Data Discovery
 
 Data Structuring
 - Age-bracket categories within the Population datasets were aligned to correspond with those in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
-    - e.g. age-brackets "<1" and "1-4" were merged to form the consolidated "0-5" bracket
+    - e.g. age-brackets `<1` and `1-4` were merged to form the consolidated `0-5` bracket
 - Given that zip codes wouldn't factor into any subsequent analyses, data for patients/providers within the same county but different zip codes for reporting years 2021-2022 was aggregated to maintain consistency with earlier datasets that utilize county as the primary unit of consideration.
 - Disparate population datasets that were categorized by patient demographics (children, young adults, older adults) were unified to form a comprehensive overview of patient population data across all ten reporting years.
 
 Data Cleaning
-- Consistency was ensured for categorical data across reporting years (e.g. “3” vs. “Schedule 3”).
+- Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3`).
 - Special values were managed to ensure integrity of SQL commands (eg conversion of “N/A” to “NULL” for SQL insertion).
-- Relevant data ('Total_Prescriptions', 'Total_Units', 'Total_Patients', 'Total_Days_Supply') was converted to integer datatype to alight with schema constraints.
+- Relevant data (`Total_Prescriptions`, `Total_Units`, `Total_Patients`, `Total_Days_Supply`) was converted to integer datatype to alight with schema constraints.
 - String data was trimmed and formatted to ensure uniformity and prevent whitespace mismatches.
 
 Data Enriching
@@ -59,7 +59,10 @@ Data Publishing
 
 
 ## Database Schema
-![Database Schema](Documentation/Database_Schema.jpg)
+![Database Schema](Database_Schema.jpg)
+The schema of the analytical database was carefully designed to account for any inherited limitations due to the de-identified nature of the prescription data.
+Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Patient_Category`) were created containing the following facts: `total_prescriptions`, `total_patients`, `total_units`, `total_days_supply`, `average_daily_MME`,  `total_above_90MME`, dimensionalized by `Drugs`, `Locations`, `Populations`, `Age-Brackets`, and `Years`.
+
 
 
 ## ETL Process
