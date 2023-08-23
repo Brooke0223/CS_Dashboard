@@ -68,6 +68,7 @@ Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Pa
 - `total_days_supply`
 - `average_daily_MME`
 - `total_above_90MME`
+
 Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `Age-Brackets`, and `Years`.
 
 
