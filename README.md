@@ -31,7 +31,7 @@ The project utilizes publicly-accessible datasets.
 
 ## Data Wrangling
 Data Discovery
-- A preliminary exploratory analysis of CSV data was performed via Pandas to discern distributions, ranges, and potential issues.
+- A preliminary exploratory analysis of CSV data was performed using Pandas to discern distributions, ranges, and potential issues.
 
 Data Structuring
 - Age-bracket categories within the Population datasets were aligned to correspond with those in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
@@ -41,7 +41,7 @@ Data Structuring
 
 Data Cleaning
 - Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3`).
-- Special values were managed to ensure integrity of SQL commands (eg conversion of “N/A” to “NULL” for SQL insertion).
+- Special values were managed to ensure integrity of SQL commands (eg conversion of `N/A` to `NULL` for SQL insertion).
 - Relevant data (`Total_Prescriptions`, `Total_Units`, `Total_Patients`, `Total_Days_Supply`) was converted to integer datatype to alight with schema constraints.
 - String data was trimmed and formatted to ensure uniformity and prevent whitespace mismatches.
 
@@ -69,18 +69,22 @@ Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Pa
 - `average_daily_MME`
 - `total_above_90MME`
 
-Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `Age-Brackets`, and `Years`.
-
+Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `Age Brackets`, and `Years`.
 
 
 ## ETL Process
+The ETL process consisted of the following steps:
+
+Python was utilized in the creation of Data Definition Language (DDL) scripts to wrangle the data, preparing it for storage in a MySQL database.
+
+MySQL "views" were generated to match the predefined star schema creating a logical structure that aligns with analytical requirements.
+
+Views from the MySQL database were exported as SQL files that encapsulated the organized data and schema structure.
+
+Using the SQL files, the data was then re-imported back into the MySQL environment, establishing the actual analytical database, and incorporating the structured views and data.
+
+
 ## Power BI Dashboard
-
-Documentation
-- Created comprehensive documentation outlining transformations, assumptions, and methods for transparency.
-
-Quality Control
-- Implemented quality control processes to validate adherence to best practices.
 
 
 ## Contribution Guidelines
