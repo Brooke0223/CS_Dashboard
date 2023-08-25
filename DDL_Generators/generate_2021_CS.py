@@ -20,7 +20,7 @@ for sheet_name in worksheets:
     df = df.iloc[:-1]
 
     # Add a new column for Year
-    df['Year'] = 2021
+    df['Prescription_Year'] = 2021
 
     # Define column name mapping
     column_mapping = {
@@ -80,14 +80,71 @@ for col in integer_columns:
 # Convert DEA_Drug_Schedule values to integer by taking the last character
 grouped_data['DEA_Drug_Schedule'] = grouped_data['DEA_Drug_Schedule'].apply(lambda x: int(str(x)[-1]))
 
+# Map 2-letter state abbreviation data to the full state names
+state_mapping = {
+    'AL': 'ALABAMA',
+    'AK': 'ALASKA',
+    'AZ': 'ARIZONA',
+    'AR': 'ARKANSAS',
+    'CA': 'CALIFORNIA',
+    'CO': 'COLORADO',
+    'CT': 'CONNECTICUT',
+    'DE': 'DELAWARE',
+    'FL': 'FLORIDA',
+    'GA': 'GEORGIA',
+    'HI': 'HAWAII',
+    'ID': 'IDAHO',
+    'IL': 'ILLINOIS',
+    'IN': 'INDIANA',
+    'IA': 'IOWA',
+    'KS': 'KANSAS',
+    'KY': 'KENTUCKY',
+    'LA': 'LOUISIANA',
+    'ME': 'MAINE',
+    'MD': 'MARYLAND',
+    'MA': 'MASSACHUSETTS',
+    'MI': 'MICHIGAN',
+    'MN': 'MINNESOTA',
+    'MS': 'MISSISSIPPI',
+    'MO': 'MISSOURI',
+    'MT': 'MONTANA',
+    'NE': 'NEBRAKSA',
+    'NV': 'NEVADA',
+    'NH': 'NEW HAMPSHIRE',
+    'NJ': 'NEW JERSEY',
+    'NM': 'NEW MEXICO',
+    'NY': 'NEW YORK',
+    'NC': 'NORTH CAROLINA',
+    'ND': 'NORTH DAKOTA',
+    'OH': 'OHIO',
+    'OK': 'OKLAHOMA',
+    'OR': 'OREGON',
+    'PA': 'PENNSYLVANIA',
+    'PR': 'PUERTO RICO',
+    'RI': 'RHODE ISLAND',
+    'SC': 'SOUTH CAROLINA',
+    'SD': 'SOUTH DAKOTA',
+    'TN': 'TENNESSEE',
+    'TX': 'TEXAS',
+    'UT': 'UTAH',
+    'VT': 'VERMONT',
+    'VA': 'VIRGINIA',
+    'WA': 'WASHINGTON',
+    'WV': 'WEST VIRGINIA',
+    'WI': 'WISCONSIN',
+    'WY': 'WYOMING'
+}
+grouped_data['PATIENT STATE'] = grouped_data['PATIENT STATE'].replace(state_mapping)
+grouped_data['PRESCRIBER STATE'] = grouped_data['PRESCRIBER STATE'].replace(state_mapping)
+
 # Define the output SQL file path
-output_sql_file = 'SQL_Files/2021_CS.SQL'
+output_sql_file = 'Raw_SQL_Files/2021_CS.SQL'
 
 # Generate DDL SQL statements
 ddl_statements = [
     "CREATE TABLE IF NOT EXISTS Prescription_Data (",
     "Prescription_Category_ID INT PRIMARY KEY AUTO_INCREMENT,",
-    "Year YEAR,",
+    "Prescription_Year YEAR,",
     "Prescriber_County VARCHAR(255),",
     "Prescriber_State VARCHAR(255),",
     "Patient_County VARCHAR(255),",
@@ -126,7 +183,7 @@ for index, row in grouped_data.iterrows():
         f"{int(row.get('Total_Above_90MME'))}" if pd.notna(row.get('Total_Above_90MME')) else 'NULL'  # Handle case where column is N/A
     ]
 
-    insert_statement = "INSERT INTO Prescription_Data (Year, Prescriber_County, Prescriber_State, Patient_County, Patient_State, Patient_Age_Bracket, "
+    insert_statement = "INSERT INTO Prescription_Data (Prescription_Year, Prescriber_County, Prescriber_State, Patient_County, Patient_State, Patient_Age_Bracket, "
     insert_statement += "Drug_Name_Strength, DEA_Drug_Schedule, AHFS_Description, Total_Prescriptions, Total_Units, "
     insert_statement += "Total_Patients, Total_Days_Supply, Average_Daily_MME, Total_Above_90MME) VALUES "
     insert_statement += f"({', '.join(insert_values)});"

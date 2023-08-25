@@ -11,7 +11,7 @@ with open(csv_filename, 'r') as csv_file:
 # Generate DDL script
 table_name = 'Population'
 
-ddl_script = f"CREATE OR REPLACE TABLE {table_name} (\n"
+ddl_script = f"CREATE TABLE IF NOT EXISTS {table_name} (\n"
 ddl_script += "    id BIGINT AUTO_INCREMENT PRIMARY KEY,\n"
 ddl_script += "    County VARCHAR(255) NOT NULL,\n"
 ddl_script += "    Year INT NOT NULL,\n"
@@ -27,7 +27,7 @@ for row in data_rows:
     insert_statements.append(insert_statement)
 
 # Write DDL and INSERT scripts to file
-sql_filename = 'SQL_Files/ALL_Population.SQL'
+sql_filename = 'Raw_SQL_Files/ALL_Population.SQL'
 
 with open(sql_filename, 'w') as sql_file:
     sql_file.write(ddl_script + '\n\n')

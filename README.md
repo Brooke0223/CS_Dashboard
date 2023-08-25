@@ -3,7 +3,7 @@
 
 ## Description
 
-The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan. In total, this project meticulously examines 10 years and more than 2 million data rows, delivering a comprehensive analysis.
+The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan. In total, this project examines 10 years and more than 2.6 million data rows, resulting in a comprehensive analysis.
 
 ## Project Objectives
 
@@ -40,7 +40,7 @@ Data Structuring
 - Disparate population datasets that were categorized by patient demographics (children, young adults, older adults) were unified to form a comprehensive overview of patient population data across all ten reporting years.
 
 Data Cleaning
-- Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3`).
+- Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3` and `MI` vs. `Michigan`).
 - Special values were managed to ensure integrity of SQL commands (eg conversion of `N/A` to `NULL` for SQL insertion).
 - Relevant data (`Total_Prescriptions`, `Total_Units`, `Total_Patients`, `Total_Days_Supply`) was converted to integer datatype to alight with schema constraints.
 - String data was trimmed and formatted to ensure uniformity and prevent whitespace mismatches.
@@ -73,11 +73,9 @@ Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `A
 
 
 ## ETL Process
-The ETL process consisted of the following steps:
+Python scripting was used to create Data Definition Language (DDL) files that wrangled the data into a MySQL database.
 
-Python was utilized in the creation of Data Definition Language (DDL) scripts to wrangle the data, preparing it for storage in a MySQL database.
-
-MySQL "views" were generated to match the predefined star schema creating a logical structure that aligns with analytical requirements.
+MySQL "views" were generated to match the predefined star schema creating a logical structure that aligned with analytical requirements.
 
 Views from the MySQL database were exported as SQL files that encapsulated the organized data and schema structure.
 
