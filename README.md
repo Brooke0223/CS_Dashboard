@@ -35,15 +35,16 @@ Data Discovery
 
 Data Structuring
 - Age-bracket categories within the Population datasets were aligned to correspond with those in the Controlled Substance datasets, ensuring uniformity for cross-dataset analysis.
-    - e.g. age-brackets `<1` and `1-4` were merged to form the consolidated `0-5` bracket
+    - e.g. age-brackets `<1` and `1-4` were merged to form the consolidated `0-4` bracket
 - Given that zip codes wouldn't factor into any subsequent analyses, data for patients/providers within the same county but different zip codes for reporting years 2021-2022 was aggregated to maintain consistency with earlier datasets that utilize county as the primary unit of consideration.
 - Disparate population datasets that were categorized by patient demographics (children, young adults, older adults) were unified to form a comprehensive overview of patient population data across all ten reporting years.
 
 Data Cleaning
-- Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3` and `MI` vs. `Michigan`).
-- Special values were managed to ensure integrity of SQL commands (eg conversion of `N/A` to `NULL` for SQL insertion).
-- Relevant data (`Total_Prescriptions`, `Total_Units`, `Total_Patients`, `Total_Days_Supply`) was converted to integer datatype to alight with schema constraints.
-- String data was trimmed and formatted to ensure uniformity and prevent whitespace mismatches.
+- Consistency was ensured for categorical data across reporting years (e.g. `3` vs. `Schedule 3`, `MI` vs. `Michigan`).
+- Special values were managed to ensure integrity of SQL commands (eg conversion of `N/A` to `NULL` for accurate SQL insertion).
+- Relevant data (`Total_Prescriptions`, `Total_Units`, `Total_Patients`, `Total_Days_Supply`) was converted to integer datatype to align with schema constraints.
+- Hydrocodone combination products dispensed in 2013 were reclassified as Schedule 2 drugs, in line with the subsequent reclassification by the Drug Enforcement Administration from Schedule 3 to Schedule 2 on October 6, 2014. This adjustment was made to maintain consistency across reporting years.
+- String data was trimmed and formatted to ensure uniformity and prevent whitespace and/or capitalization mismatches.
 
 Data Enriching
 - The population dataset was integrated to provide a broader demographic context to prescribing trends.
@@ -69,13 +70,13 @@ Two fact-tables (`Prescriptions_By_Prescriber_Category` and `Prescriptions_By_Pa
 - `average_daily_MME`
 - `total_above_90MME`
 
-Both fact tables were dimensionalized by `Drugs`, `Locations`, `Populations`, `Age Brackets`, and `Years`.
+Both fact tables are dimensionalized by `Drugs`, `Locations`, `Populations`, `Age Brackets`, and `Years`.
 
 
 ## ETL Process
 Python scripting was used to create Data Definition Language (DDL) files that wrangled the data into a MySQL database.
 
-MySQL "views" were generated to match the predefined star schema creating a logical structure that aligned with analytical requirements.
+MySQL "views" were generated to match the predefined star schema creating a logical structure that aligned with the analytical requirements.
 
 Views from the MySQL database were exported as SQL files that encapsulated the organized data and schema structure.
 

@@ -80,65 +80,75 @@ for col in integer_columns:
 # Convert DEA_Drug_Schedule values to integer by taking the last character
 grouped_data['DEA_Drug_Schedule'] = grouped_data['DEA_Drug_Schedule'].apply(lambda x: int(str(x)[-1]))
 
-# Map 2-letter state abbreviation data to the full state names
+# Convert state abbreviations to full state names
 state_mapping = {
-    'AL': 'ALABAMA',
-    'AK': 'ALASKA',
-    'AZ': 'ARIZONA',
-    'AR': 'ARKANSAS',
-    'CA': 'CALIFORNIA',
-    'CO': 'COLORADO',
-    'CT': 'CONNECTICUT',
-    'DE': 'DELAWARE',
-    'FL': 'FLORIDA',
-    'GA': 'GEORGIA',
-    'HI': 'HAWAII',
-    'ID': 'IDAHO',
-    'IL': 'ILLINOIS',
-    'IN': 'INDIANA',
-    'IA': 'IOWA',
-    'KS': 'KANSAS',
-    'KY': 'KENTUCKY',
-    'LA': 'LOUISIANA',
-    'ME': 'MAINE',
-    'MD': 'MARYLAND',
-    'MA': 'MASSACHUSETTS',
-    'MI': 'MICHIGAN',
-    'MN': 'MINNESOTA',
-    'MS': 'MISSISSIPPI',
-    'MO': 'MISSOURI',
-    'MT': 'MONTANA',
-    'NE': 'NEBRAKSA',
-    'NV': 'NEVADA',
-    'NH': 'NEW HAMPSHIRE',
-    'NJ': 'NEW JERSEY',
-    'NM': 'NEW MEXICO',
-    'NY': 'NEW YORK',
-    'NC': 'NORTH CAROLINA',
-    'ND': 'NORTH DAKOTA',
-    'OH': 'OHIO',
-    'OK': 'OKLAHOMA',
-    'OR': 'OREGON',
-    'PA': 'PENNSYLVANIA',
-    'PR': 'PUERTO RICO',
-    'RI': 'RHODE ISLAND',
-    'SC': 'SOUTH CAROLINA',
-    'SD': 'SOUTH DAKOTA',
-    'TN': 'TENNESSEE',
-    'TX': 'TEXAS',
-    'UT': 'UTAH',
-    'VT': 'VERMONT',
-    'VA': 'VIRGINIA',
-    'WA': 'WASHINGTON',
-    'WV': 'WEST VIRGINIA',
-    'WI': 'WISCONSIN',
-    'WY': 'WYOMING'
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'PR': 'Puerto Rico',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming'
 }
 grouped_data['PATIENT STATE'] = grouped_data['PATIENT STATE'].replace(state_mapping)
 grouped_data['PRESCRIBER STATE'] = grouped_data['PRESCRIBER STATE'].replace(state_mapping)
 
+# Convert selected string columns to titlecase to maintain consistency across reporting years
+titlecase_columns = ['PRESCRIBER COUNTY', 'PRESCRIBER STATE', 'PATIENT COUNTY', 'PATIENT STATE']
+for col in titlecase_columns:
+    grouped_data[col] = grouped_data[col].apply(lambda x: x.title() if pd.notna(x) else x)
+
+# Convert selected string columns to uppercase to maintain consistency across reporting years
+uppercase_columns = ['Drug_Name_Strength', 'AHFS DESCRIPTION']
+for col in uppercase_columns:
+    grouped_data[col] = grouped_data[col].apply(lambda x: x.upper() if pd.notna(x) else x)
+
 # Define the output SQL file path
-output_sql_file = 'Raw_SQL_Files/2021_CS.SQL'
+output_sql_file = 'Data_Wrangling/Raw_SQL_Files/2021_CS.SQL'
 
 # Generate DDL SQL statements
 ddl_statements = [
