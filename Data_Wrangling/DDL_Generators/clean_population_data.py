@@ -5,7 +5,7 @@ from pathlib import Path
 
 def process_file(file_path, age_bracket_mapping):
     """
-    Process a single data file to create a DataFrame with relevant information.
+    Processes *individual* population data files (2013-2021) to create a DataFrame with relevant information.
 
     Args:
         file_path (str): Path to the data file.
@@ -67,6 +67,58 @@ def process_file(file_path, age_bracket_mapping):
     return df_grouped
 
 
+def process_combined_file(file_path):
+    """
+    Processes *combined* population data files (2022) to create a DataFrame with relevant information.
+
+    Args:
+        file_path (str): Path to the data file.
+        age_bracket_mapping (dict): Mapping of age brackets to desired age brackets.
+
+    Returns:
+        pandas.DataFrame: Processed DataFrame containing age bracket, county, year, and population data.
+    """
+    # Read the original CSV file
+    df = pd.read_csv(file_path)
+
+    # Create a list to store the processed data
+    processed_data = []
+
+    # Define age brackets
+    age_brackets = {
+        '0-4': ['UNDER5_TOT'],
+        '5-17': ['AGE513_TOT', 'AGE1417_TOT'],
+        '18-24': ['AGE1824_TOT'],
+        '25-34': ['AGE2529_TOT', 'AGE3034_TOT'],
+        '35-44': ['AGE3539_TOT', 'AGE4044_TOT'],
+        '45-54': ['AGE4549_TOT', 'AGE5054_TOT'],
+        '55-64': ['AGE5559_TOT', 'AGE6064_TOT'],
+        '65+': ['AGE65PLUS_TOT']
+    }
+
+    # Filter data for the year "4" (the format of this population file lists 2022 data as year "4")
+    filtered_df = df[df['YEAR'] == 4]
+
+    # Change the year to "2022"
+    year = 2022
+
+    # Iterate over rows in the filtered DataFrame
+    for index, row in filtered_df.iterrows():
+        county = row['CTYNAME']
+
+        # Iterate over age brackets and calculate total population
+        for age_bracket, columns in age_brackets.items():
+            total_population = sum(row[column] for column in columns)
+
+            # Append the data to the list
+            processed_data.append([county, year, age_bracket, total_population])
+
+    # Create a new DataFrame from the list
+    processed_df = pd.DataFrame(processed_data, columns=['County', 'Year', 'Age_Bracket', 'Population_Total'])
+
+    return processed_df
+
+
 def process_directory(data_dir, age_bracket_mapping):
     """
     Process a directory of data files to create a final combined DataFrame.
@@ -85,6 +137,10 @@ def process_directory(data_dir, age_bracket_mapping):
             if file in ["Kids.csv", "Younger_Adults.csv", "Older_Adults.csv"]:
                 file_path = os.path.join(root, file)
                 df_processed = process_file(file_path, age_bracket_mapping)
+                processed_dfs.append(df_processed)
+            elif file in ["Combined_Data.csv"]:
+                file_path = os.path.join(root, file)
+                df_processed = process_combined_file(file_path)
                 processed_dfs.append(df_processed)
 
     final_df = pd.concat(processed_dfs, ignore_index=True)

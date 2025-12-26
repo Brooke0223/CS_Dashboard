@@ -3,7 +3,7 @@
 
 ## Description
 
-The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan. In total, this project examines 10 years and more than 2.6 million data rows, resulting in a comprehensive analysis.
+The "Michigan Controlled Substance Dashboard" has been developed as a dynamic Power BI visualization, utilizing data science techniques to analyze and derive meaningful insights into Controlled Substance Prescribing Practices from 2013-2022. This initiative capitalizes on extensive and publicly accessible datasets, crafting an immersive visualization tool that fosters an enriched understanding of controlled substance prescription trends within the state of Michigan. In total, this project examines 10 years and more than 3.5 million data rows, resulting in a comprehensive overview.
 
 ## Project Objectives
 
@@ -84,8 +84,7 @@ Using the SQL files, the data was then re-imported back into the MySQL environme
 
 
 ## Power BI Dashboard
-*(forthcoming)*
+![Stimulant Dashboard image](/Stimulant_Dashoboard_image.jpg)
 
 ## Contribution Guidelines
-
 Contributions to this project are welcome! If you find any issues or have suggestions for improvement, please create a pull request. For major changes, please open an issue first to discuss the proposed changes.

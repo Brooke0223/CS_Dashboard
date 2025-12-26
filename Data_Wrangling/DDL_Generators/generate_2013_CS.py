@@ -1,5 +1,8 @@
 import pandas as pd
 from pathlib import Path
+from data_mappings import state_mapping
+from data_mappings import drug_name_mapping
+from data_mappings import cs_component_mapping
 
 # Read the Excel file
 excel_file = pd.ExcelFile(Path('Raw_Data/CS_Data/2013/Drug Utilization Report Data - 2013.xlsx'))
@@ -37,59 +40,6 @@ column_mapping = {
 combined_data.rename(columns=column_mapping, inplace=True)
 
 # Convert state abbreviations to full state names
-state_mapping = {
-    'AL': 'Alabama',
-    'AK': 'Alaska',
-    'AZ': 'Arizona',
-    'AR': 'Arkansas',
-    'CA': 'California',
-    'CO': 'Colorado',
-    'CT': 'Connecticut',
-    'DE': 'Delaware',
-    'FL': 'Florida',
-    'GA': 'Georgia',
-    'HI': 'Hawaii',
-    'ID': 'Idaho',
-    'IL': 'Illinois',
-    'IN': 'Indiana',
-    'IA': 'Iowa',
-    'KS': 'Kansas',
-    'KY': 'Kentucky',
-    'LA': 'Louisiana',
-    'ME': 'Maine',
-    'MD': 'Maryland',
-    'MA': 'Massachusetts',
-    'MI': 'Michigan',
-    'MN': 'Minnesota',
-    'MS': 'Mississippi',
-    'MO': 'Missouri',
-    'MT': 'Montana',
-    'NE': 'Nebraska',
-    'NV': 'Nevada',
-    'NH': 'New Hampshire',
-    'NJ': 'New Jersey',
-    'NM': 'New Mexico',
-    'NY': 'New York',
-    'NC': 'North Carolina',
-    'ND': 'North Dakota',
-    'OH': 'Ohio',
-    'OK': 'Oklahoma',
-    'OR': 'Oregon',
-    'PA': 'Pennsylvania',
-    'PR': 'Puerto Rico',
-    'RI': 'Rhode Island',
-    'SC': 'South Carolina',
-    'SD': 'South Dakota',
-    'TN': 'Tennessee',
-    'TX': 'Texas',
-    'UT': 'Utah',
-    'VT': 'Vermont',
-    'VA': 'Virginia',
-    'WA': 'Washington',
-    'WV': 'West Virginia',
-    'WI': 'Wisconsin',
-    'WY': 'Wyoming'
-}
 combined_data['PATIENT STATE'] = combined_data['PATIENT STATE'].replace(state_mapping)
 combined_data['PRESCRIBER STATE'] = combined_data['PRESCRIBER STATE'].replace(state_mapping)
 
@@ -102,6 +52,12 @@ for col in titlecase_columns:
 uppercase_columns = ['Drug_Name_Strength', 'AHFS DESCRIPTION']
 for col in uppercase_columns:
     combined_data[col] = combined_data[col].apply(lambda x: x.upper() if pd.notna(x) else x)
+
+# Convert 'Drug_Name_Strength' column to standardized form & generic name to maintain consistency across reporting years
+combined_data['Drug_Name_Strength'] = [drug_name_mapping.get(key, key) for key in combined_data['Drug_Name_Strength']]
+
+# Add a new column for CS_Component, and populate with CS_Component mappings
+combined_data['CS_Component'] = combined_data['Drug_Name_Strength'].replace(cs_component_mapping)
 
 # Initialize a list to track validation errors
 validation_errors = []
@@ -144,6 +100,7 @@ ddl_statements = [
     "Drug_Name_Strength VARCHAR(255),",
     "DEA_Drug_Schedule INT,",
     "AHFS_Description VARCHAR(255),",
+    "CS_Component VARCHAR(255),",
     "Total_Prescriptions INT,",
     "Total_Units INT,",
     "Total_Patients INT,",
@@ -166,6 +123,7 @@ for index, row in combined_data.iterrows():
         f"'{row.get('Drug_Name_Strength')}'",
         f"{row.get('DEA_Drug_Schedule')}",
         f"'{row.get('AHFS DESCRIPTION')}'",
+        f"'{row.get('CS_Component')}'",
         f"{row.get('Total_Prescriptions')}",
         f"{row.get('Total_Units')}",
         'NULL',  # Account for Total_Patients not present in this dataset
@@ -175,7 +133,7 @@ for index, row in combined_data.iterrows():
     ]
 
     insert_statement = "INSERT INTO Prescription_Data (Prescription_Year, Prescriber_County, Prescriber_State, Patient_County, Patient_State, Patient_Age_Bracket, "
-    insert_statement += "Drug_Name_Strength, DEA_Drug_Schedule, AHFS_Description, Total_Prescriptions, Total_Units, "
+    insert_statement += "Drug_Name_Strength, DEA_Drug_Schedule, AHFS_Description, CS_Component, Total_Prescriptions, Total_Units, "
     insert_statement += "Total_Patients, Total_Days_Supply, Average_Daily_MME, Total_Above_90MME) VALUES "
     insert_statement += f"({', '.join(insert_values)});"
 

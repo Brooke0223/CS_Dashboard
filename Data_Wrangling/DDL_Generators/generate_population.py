@@ -13,9 +13,9 @@ table_name = 'Population'
 
 ddl_script = f"CREATE TABLE IF NOT EXISTS {table_name} (\n"
 ddl_script += "    Population_id BIGINT AUTO_INCREMENT PRIMARY KEY,\n"
-ddl_script += "    County VARCHAR(255) NOT NULL,\n"
+ddl_script += "    County VARCHAR(25) NOT NULL,\n"
 ddl_script += "    Population_Year YEAR NOT NULL,\n"
-ddl_script += "    Age_Bracket VARCHAR(255) NOT NULL,\n"
+ddl_script += "    Age_Bracket VARCHAR(25) NOT NULL,\n"
 ddl_script += "    Population_Total INT NOT NULL\n"
 ddl_script += ");"
 
